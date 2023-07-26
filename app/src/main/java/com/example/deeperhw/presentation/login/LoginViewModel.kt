@@ -3,7 +3,6 @@ package com.example.deeperhw.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.deeperhw.common.RepoResult
-import com.example.deeperhw.common.RepoResultError
 import com.example.deeperhw.domain.usecase.PerformLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +24,7 @@ class LoginViewModel @Inject constructor(
     private val _onLoginSuccess = MutableSharedFlow<Unit>()
     val onLoginSuccess = _onLoginSuccess.asSharedFlow()
 
-    private val _onLoginError = MutableSharedFlow<RepoResultError>()
+    private val _onLoginError = MutableSharedFlow<Unit>()
     val onLoginError = _onLoginError.asSharedFlow()
 
     fun login(email: String, password: String) {
@@ -33,7 +32,7 @@ class LoginViewModel @Inject constructor(
             when (result) {
                 is RepoResult.Error -> {
                     _isLoading.emit(false)
-                    _onLoginError.emit(result.errorType)
+                    _onLoginError.emit(Unit)
                 }
                 is RepoResult.Loading -> {
                     _isLoading.emit(true)

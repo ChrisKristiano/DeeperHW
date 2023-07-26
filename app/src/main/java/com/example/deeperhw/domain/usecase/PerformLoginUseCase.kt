@@ -1,7 +1,6 @@
 package com.example.deeperhw.domain.usecase
 
 import com.example.deeperhw.common.RepoResult
-import com.example.deeperhw.common.RepoResultError
 import com.example.deeperhw.di.IoDispatcher
 import com.example.deeperhw.domain.repository.DataRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,7 +20,7 @@ class PerformLoginUseCase @Inject constructor(
             repository.login(email, password)
             emit(RepoResult.Success())
         } catch (e: Exception) {
-            emit(RepoResult.Error(RepoResultError.INVALID_AUTHENTICATION))
+            emit(RepoResult.Error())
         }
     }.flowOn(dispatcher)
 }
