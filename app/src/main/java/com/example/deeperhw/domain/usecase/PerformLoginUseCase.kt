@@ -16,11 +16,11 @@ class PerformLoginUseCase @Inject constructor(
 ) {
     operator fun invoke(email: String, password: String): Flow<RepoResult<Nothing>> = flow {
         try {
-            emit(RepoResult.Loading())
+            emit(RepoResult.Loading<Nothing>())
             repository.login(email, password)
-            emit(RepoResult.Success())
+            emit(RepoResult.Success<Nothing>())
         } catch (e: Exception) {
-            emit(RepoResult.Error())
+            emit(RepoResult.Error<Nothing>())
         }
     }.flowOn(dispatcher)
 }

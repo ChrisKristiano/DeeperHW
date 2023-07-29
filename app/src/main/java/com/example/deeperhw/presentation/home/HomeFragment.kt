@@ -1,4 +1,4 @@
-package com.example.deeperhw.presentation.login
+package com.example.deeperhw.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,39 +11,41 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.example.deeperhw.R
-import com.example.deeperhw.databinding.FragmentLoginBinding
+import com.example.deeperhw.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoginFragment : Fragment(R.layout.fragment_login) {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private val viewModel: LoginViewModel by viewModels()
-    private lateinit var binding: FragmentLoginBinding
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var adapter: HomeScanAdapter
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentLoginBinding.inflate(inflater, container, false).also {
+    ): View = FragmentHomeBinding.inflate(inflater, container, false).also {
+        setupAdapter()
+        it.scanList.adapter = adapter
         binding = it
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupListeners()
         setupEvents()
     }
 
-    private fun setupListeners() {
-        binding.buttonLogin.setOnClickListener {
-            viewModel.login(
-                binding.emailText.text.toString(),
-                binding.passwordText.text.toString()
-            )
+    private fun setupAdapter() {
+        adapter = HomeScanAdapter(emptyList()) { id ->
+            id?.let {
+                // TODO: Navigate
+            } ?: run {
+                Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -51,14 +53,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.onLoginSuccess.collectLatest {
-                        findNavController().navigate(LoginFragmentDirections.toHome())
+                    viewModel.scannedLocations.collectLatest {
+                        adapter.updateList(it)
                     }
                 }
 
                 launch {
-                    viewModel.onLoginError.collectLatest {
-                        Toast.makeText(requireContext(), R.string.incorrect_login, Toast.LENGTH_LONG).show()
+                    viewModel.onError.collectLatest {
+                        Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_LONG).show()
                     }
                 }
 
@@ -72,7 +74,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun setLoading(isLoading: Boolean) {
-        binding.buttonLogin.isVisible = !isLoading
+        binding.scanList.isVisible = !isLoading
         binding.loadingIndicator.isVisible = isLoading
     }
 }

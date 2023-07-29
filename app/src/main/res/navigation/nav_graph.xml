@@ -9,5 +9,13 @@
         android:id="@+id/LoginFragment"
         android:name="com.example.deeperhw.presentation.login.LoginFragment"
         tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/toHome"
+            app:destination="@+id/HomeFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.example.deeperhw.presentation.home.HomeFragment"
+        tools:layout="@layout/fragment_home"/>
 </navigation>

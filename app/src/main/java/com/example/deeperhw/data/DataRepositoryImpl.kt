@@ -1,6 +1,7 @@
 package com.example.deeperhw.data
 
 import com.example.deeperhw.data.dto.LoginRequest
+import com.example.deeperhw.data.entities.ScanEntity
 import com.example.deeperhw.data.local.DataCache
 import com.example.deeperhw.data.local.SharedPrefs
 import com.example.deeperhw.data.remote.DataApi
@@ -22,4 +23,6 @@ class DataRepositoryImpl @Inject constructor(
         sharedPrefs.setToken(result.login.token.orEmpty())
         cache.setScannedLocations(result.scans)
     }
+
+    override suspend fun getScannedLocations(): List<ScanEntity> = cache.getScannedLocations()
 }
