@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.deeperhw.R
 import com.example.deeperhw.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +43,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupAdapter() {
         adapter = HomeScanAdapter(emptyList()) { id ->
             id?.let {
-                // TODO: Navigate
+                findNavController().navigate(HomeFragmentDirections.toScanDetails(it))
             } ?: run {
                 Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_LONG).show()
             }

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -60,6 +61,9 @@ dependencies {
     // Navigation component
     implementation "androidx.navigation:navigation-fragment-ktx:2.6.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.6.0"
+
+    // Google Maps
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }
 
 kapt {

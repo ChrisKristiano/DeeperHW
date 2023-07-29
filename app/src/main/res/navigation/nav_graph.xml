@@ -17,5 +17,22 @@
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.deeperhw.presentation.home.HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/toScanDetails"
+            app:destination="@+id/ScanDetailsFragment">
+            <argument
+                android:name="scanId"
+                app:argType="integer"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ScanDetailsFragment"
+        android:name="com.example.deeperhw.presentation.scandetails.ScanDetailsFragment"
+        tools:layout="@layout/fragment_scan_details">
+        <argument
+            android:name="scanId"
+            app:argType="integer"/>
+    </fragment>
 </navigation>
