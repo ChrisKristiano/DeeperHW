@@ -2,10 +2,12 @@ package com.example.deeperhw.di
 
 import android.content.Context
 import com.example.deeperhw.data.DataRepositoryImpl
+import com.example.deeperhw.data.UserRepositoryImpl
 import com.example.deeperhw.data.local.DataCache
 import com.example.deeperhw.data.local.SharedPrefs
-import com.example.deeperhw.data.remote.DataApi
+import com.example.deeperhw.data.remote.Api
 import com.example.deeperhw.domain.repository.DataRepository
+import com.example.deeperhw.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,16 +23,21 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDataApi(): DataApi = Retrofit.Builder()
+    fun provideApi(): Api = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("https://maps.fishdeeper.com/api/")
         .build()
-        .create(DataApi::class.java)
+        .create(Api::class.java)
 
     @Provides
     @Singleton
-    fun provideDataRepository(api: DataApi, cache: DataCache, sharedPrefs: SharedPrefs): DataRepository =
+    fun provideDataRepository(api: Api, cache: DataCache, sharedPrefs: SharedPrefs): DataRepository =
         DataRepositoryImpl(api, cache, sharedPrefs)
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: Api, cache: DataCache, sharedPrefs: SharedPrefs): UserRepository =
+        UserRepositoryImpl(api, cache, sharedPrefs)
 
     @Provides
     @Singleton

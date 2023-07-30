@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface DataApi {
+interface Api {
 
     @POST("login")
     suspend fun login(@Body request: LoginRequest): LoginResponse
