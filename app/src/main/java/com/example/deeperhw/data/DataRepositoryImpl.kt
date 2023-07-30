@@ -6,6 +6,8 @@ import com.example.deeperhw.data.local.DataCache
 import com.example.deeperhw.data.local.SharedPrefs
 import com.example.deeperhw.data.remote.DataApi
 import com.example.deeperhw.domain.repository.DataRepository
+import org.json.JSONObject
+import java.lang.Exception
 import javax.inject.Inject
 
 class DataRepositoryImpl @Inject constructor(
@@ -25,4 +27,14 @@ class DataRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getScannedLocations(): List<ScanEntity> = cache.getScannedLocations()
+
+    override suspend fun getScanDetails(scanId: Int): JSONObject {
+        val result = api.getScanDetails(
+            scanId = scanId.toString(),
+            token = sharedPrefs.getToken()
+        )
+        return result.body()?.let {
+            JSONObject(it.string())
+        } ?: throw Exception()
+    }
 }

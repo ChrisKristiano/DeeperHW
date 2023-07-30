@@ -31,6 +31,6 @@ class GetScannedLocationsUseCase @Inject constructor(
     private fun ScanEntity.toScan(): Scan = Scan(
         id = this.id,
         name = this.name,
-        date = this.ddate?.toLocalDateTime()
+        date = this.date?.toLocalDateTime()
     )
 }
